@@ -18,9 +18,9 @@ guessbox.each do |i|
 end
 puts
 
-guesses = 7
+guesses = 6
 
-until guesses == 0 || guessbox.include?(" _ ") == false do
+until guesses < 0 || guessbox.include?(" _ ") == false do
   print "Guess a letter: "
   guess = gets.chomp
 
@@ -41,10 +41,10 @@ until guesses == 0 || guessbox.include?(" _ ") == false do
         end
         index += 1
 
-    guesses -= 1
   end
 
-    print "You have #{guesses} guesses left \n"
+    # Decrement guess counter
+    guesses -= 1
 
     # Print board
     guessbox.each do |i|
@@ -59,6 +59,7 @@ until guesses == 0 || guessbox.include?(" _ ") == false do
       print  " " + l + " "
     end
     puts
+    print "Guess left: #{guesses}\n"
   end
 end
 
