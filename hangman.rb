@@ -2,11 +2,19 @@ require "pry"
 
 play = true
 
+
+f = File.open("dictwords.txt")
+
 while play
 
   puts "Welcome to Hangman"
 
-  words = ["bonobo", "fishy","birdie"]
+  # words = []
+
+  dict = []
+  f.each_line {|line| dict.push line.chomp}
+
+  words = dict.select { |x| x.length > 3 && x.length < 6}
 
   splitword = words.sample.split("")
 
@@ -17,6 +25,7 @@ while play
   prevguess = []
 
   # Print board
+  puts
   guessbox.each do |i|
     print i
   end
@@ -27,7 +36,7 @@ while play
   until guesses == 0 || guessbox.include?(" _ ") == false do
     print "Guess a letter: "
     guess = gets.chomp
-
+    unknownleft = guessbox.count " _ "
 
     if guess.to_i.to_s == guess || guess.length > 1
 
@@ -37,7 +46,7 @@ while play
 
       puts "You already guess that!"
 
-    elsif
+    else
       index = 0
       splitword.each do |i|
         if i == guess
@@ -48,9 +57,12 @@ while play
       end
 
       # Decrement guess counter
-      guesses -= 1
+      guesses -= 1 unless (guessbox.count " _ ").to_i < unknownleft.to_i
+
+
 
       # Print board
+      puts
       guessbox.each do |i|
         print i
       end
@@ -58,14 +70,14 @@ while play
 
       prevguess.push(guess)
       # Prints previous guesses
-      print "Previous Guesses\n"
+      print "Previous Guesses:\n"
       prevguess.each do |l|
         print  " " + l + " "
       end
       puts
 
       # Prints remaining guesses
-      print "Guess left: #{guesses}\n"
+      print "Guesses left: #{guesses}\n"
 
     end
   end
